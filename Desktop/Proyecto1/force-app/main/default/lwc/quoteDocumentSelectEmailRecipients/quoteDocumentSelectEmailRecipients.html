@@ -1,0 +1,24 @@
+<template>
+    <div lwc:if={_isDataLoaded}>
+        <template lwc:if={_isNothingSelected}>
+            <div class="slds-card slds-theme slds-theme_warning slds-p-around_medium">
+                There are no contacts related to current Quote's Account. 
+            </div>
+        </template>
+        <template lwc:else>
+            <lightning-datatable
+                    lwc:ref="recipientTable"
+                    key-field="contactId"
+                    data={_recipients}
+                    columns={_columns}
+                    selected-rows={_preselectedRows}
+                    onclick={assignOutputForFlow}>
+            </lightning-datatable>
+        </template>
+    </div>
+    <div lwc:else>
+        <div style="position:relative; height:100px;">
+            <lightning-spinner variant="brand">Loading...</lightning-spinner>
+        </div>
+    </div>
+</template>

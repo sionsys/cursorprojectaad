@@ -1,0 +1,31 @@
+<template>
+    <fieldset class="slds-form-element">
+        <legend class="slds-form-element__legend slds-form-element__label">{label}</legend>
+    	<div class="slds-form-element__control">
+            <template for:each={options} for:item="item">
+                <span key={item.value} class="slds-radio">
+                    <input type="radio" id={item.value} value={item.value} name="default" disabled={item.disabled} onchange={handleClick}/>
+                    <template lwc:if={item.disabled}>
+                        <label class="slds-radio__label" for={item.value} data-value={item.value} onmouseover={handleMouseOver} onmouseout={handleMouseOverOut}>
+                            <span class="slds-radio_faux"></span>
+                            <span class="slds-form-element__label">{item.label}</span>
+                        </label>
+                    </template>
+                    <template lwc:else>
+                        <label class="slds-radio__label" for={item.value}>
+                            <span class="slds-radio_faux"></span>
+                            <span class="slds-form-element__label">{item.label}</span>
+                        </label>
+                    </template>
+                  </span>
+            </template>
+        </div>
+      </fieldset>
+
+
+      <c-cpq-configurator-popover header hide-header nubbin="slds-nubbin_bottom">
+        <div slot="content" class="slds-p-top_medium">
+            {onHoverMessage}
+        </div>
+    </c-cpq-configurator-popover>
+</template>

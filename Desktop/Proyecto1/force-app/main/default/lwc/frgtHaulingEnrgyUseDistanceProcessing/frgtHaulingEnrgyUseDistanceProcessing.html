@@ -1,0 +1,97 @@
+<template>
+    <lightning-card title="Freight Hauling Energy Use Distance Processing" icon-name="custom:custom14">
+        <template if:true={isLoading}>
+            <div class="slds-is-relative slds-p-around_small">
+                <lightning-layout-item size="12" class="slds-p-around_small slds-align_absolute-center">
+                    <div class="slds-is-relative">
+                        <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+                    </div>
+                </lightning-layout-item>
+                <lightning-layout-item size="12" class="slds-p-around_small slds-align_absolute-center">
+                    <p>Loading. Please wait.</p>
+                </lightning-layout-item>
+            </div>
+        </template>
+    
+        <template if:false={isLoading}>
+            <div class="slds-p-around_small">
+                <lightning-layout multiple-rows="true">
+                    <div class="slds-scrollable_x">
+                        <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-max-medium-table_stacked">
+                            <thead>
+                                <tr class="slds-text-title_caps">
+                                    <th scope="col" class="slds-cell-wrap">
+                                        <div class="slds-truncate" title="Description">Description</div>
+                                    </th>
+                                    <th scope="col" class="slds-cell-wrap">
+                                        <div class="slds-truncate" title="Count">Count</div>
+                                    </th>
+                                    <th scope="col" class="slds-cell-wrap">
+                                        <div class="slds-truncate" title="Action">Action</div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="slds-cell-wrap">Records With No Distance</td>
+                                    <td class="slds-cell-wrap">
+                                        <template lwc:if={statisticsLoading}>
+                                            <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+                                        </template>
+                                        <template lwc:else>
+                                            {countOfRecordsWithZeroDistance}
+                                        </template>
+                                    </td>
+                                    <td class="slds-cell-wrap">
+                                        <lightning-layout-item size="12" class="slds-align_absolute-center">
+                                            <div>
+                                                <lightning-button disabled={isBatchJobRunning} label="Calculate Distance" class="slds-p-right_x-small" onclick={handleDistanceCalculation}></lightning-button>
+                                                <template if:true={isBatchJobRunning}>
+                                                    <lightning-spinner alternative-text="Freight Hauling Energy Processing is currently running. Please wait." size="small"></lightning-spinner>
+                                                </template>
+                                            </div>
+                                        </lightning-layout-item>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="slds-cell-wrap">Records With No Distance & Address Issues</td>
+                                    <td class="slds-cell-wrap">
+                                        <template lwc:if={statisticsLoading}>
+                                            <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+                                        </template>
+                                        <template lwc:else>
+                                            {countOfRecordsWithIssuesAndZeroDistance}
+                                        </template>
+                                    </td>
+                                    <td class="slds-cell-wrap">
+                                        <lightning-layout-item size="12" class="slds-align_absolute-center">
+                                            <div>
+                                                <lightning-button disabled={isBatchJobRunning} label="Reset Records" class="slds-p-right_x-small" onclick={handleClearFailureFlag}></lightning-button>
+                                                <template if:true={isBatchJobRunning}>
+                                                    <lightning-spinner alternative-text="Freight Hauling Energy Processing is currently running. Please wait." size="small"></lightning-spinner>
+                                                </template>
+                                            </div>
+                                        </lightning-layout-item>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <template if:true={isBatchJobRunning}>
+                        <lightning-layout-item size="12" class="slds-p-around_small slds-align_absolute-center">
+                            <p style="color: red; font-style: italic;">Freight Hauling Energy Processing is currently running. Please wait.</p>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" class="slds-p-around_small">
+                            <lightning-progress-bar value={progress} variant="base" size="medium"></lightning-progress-bar>
+                            <p>{progress}% Completed</p>
+                        </lightning-layout-item>
+                    </template>
+
+                </lightning-layout>
+            </div>
+        </template>
+
+    </lightning-card>
+
+</template>

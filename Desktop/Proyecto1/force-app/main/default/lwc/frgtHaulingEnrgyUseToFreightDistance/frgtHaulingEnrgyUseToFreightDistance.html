@@ -1,0 +1,62 @@
+<template>
+    <lightning-card title="Related Freight Distance" icon-name="custom:custom14">
+        <div class="slds-is-relative slds-p-around_small" lwc:if={isLoading}>
+            <lightning-layout-item size="12" class="slds-p-around_small slds-align_absolute-center">
+                <div class="slds-is-relative">
+                    <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+                </div>
+            </lightning-layout-item>
+            <lightning-layout-item size="12" class="slds-p-around_small slds-align_absolute-center">
+                <p>Loading. Please wait.</p>
+            </lightning-layout-item>
+        </div>
+    
+        <div class="slds-p-around_small" lwc:else>
+            <lightning-layout multiple-rows="true">
+                <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                    <thead>
+                        <tr class="slds-text-title_caps">
+                            <th scope="col">Description</th>
+                            <th scope="col">Data</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>External Id</td>
+                            <td>{externalId}</td>
+                        </tr>
+                        <tr>
+                            <td>Link to Freight Distance</td>
+                            <td>
+                                <template if:true={linkToFreightDistance}>
+                                    <a href={linkToFreightDistance} target="_blank">{freightDistanceName}</a>
+                                </template>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Distance</td>
+                            <td>{distanceValue}</td>
+                        </tr>
+                        <tr>
+                            <td>Created Date</td>
+                            <td>
+                                <lightning-formatted-date-time 
+                                    value={createdDate} 
+                                    year="numeric" 
+                                    month="2-digit" 
+                                    day="2-digit" 
+                                    hour="2-digit" 
+                                    minute="2-digit" 
+                                    second="2-digit">
+                                </lightning-formatted-date-time>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>                   
+
+            </lightning-layout>
+        </div>
+
+    </lightning-card>
+
+</template>
