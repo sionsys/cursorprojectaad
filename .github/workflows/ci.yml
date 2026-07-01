@@ -3,6 +3,8 @@ name: CI/CD Pipeline Validation
 on:
   pull_request:
     branches: [ main, master ]
+  push:
+    branches: [ main, master ]
 
 jobs:
   validate-project:
@@ -15,7 +17,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
 
       - name: Install Dependencies
         run: npm install
