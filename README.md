@@ -1,50 +1,32 @@
-## 1. Data Model & Architecture
+# Lead Capture Project — Technical & Architectural Documentation
 
-Two custom fields were verified/implemented on the standard **Lead** object to support notes capture and source accounts:
-
-* **Capture_Notes__c (Long Text Area):** Stores specific interaction and qualification notes during the lead capture process.
-
-* **Source_Account__c (Lookup to Account):** Links the newly created Lead back to the Account record page where the form is hosted.
-
-### Security & Access Control
-
-* **Permission Set:** `Lead_Capture_Access` ensures that users have Read/Write metadata permissions over the custom fields and the `leadCaptureForm` component.
+This repository contains the complete production-ready implementation of the custom Lead Capture solution inside Salesforce, using Lightning Web Components (LWC), Apex controllers, and robust security patterns.
 
 ---
 
-## 2. Technical Implementation
+## 1. Solution Architecture & Data Flow Diagram
 
-### Front-End (LWC)
+The following diagram illustrates the end-to-end data flow, component interactions, and the boundaries between the User Interface, the Controller layer, and the Salesforce Database.
 
-* **Component Name:** `leadCaptureForm`
+```mermaid
 
-* **Framework Features:** Utilizes `<lightning-record-edit-form>` to ensure secure, standard metadata binding, automatic field layout validation, and error management.
+graph TD
 
-* **Context Awareness:** Dynamically retrieves the hosting Account name via `@api recordId` and pre-fills it inside the component.
+    A[Account Record Page] -->|Hosts| B(LWC: leadCaptureForm)
 
-### Back-End (Apex)
+    B -->|User Inputs Data| C{lightning-record-edit-form}
 
-* **Controller Class:** `LeadCaptureController.cls`
+    C -->|Automatic Metadata Validation| D[JS Controller]
 
-* **Method:** `createLeadRecord(Lead leadRecord)`
+    D -->|Imperative Apex Call: createLeadRecord| E[Apex Class: LeadCaptureController]
 
-    * Inserts the record securely with sharing rules enforced `with sharing`).
+    E -->|Security Enforcement: with sharing| F{Database DML Insert}
 
-    * Handles database exceptions by wrapping them in `AuraHandledException` for friendly front-end reporting.
+    F -->|Success Response| G[Show Toast Notification & Reset Form]
 
-* **Test Class:** `LeadCaptureControllerTest.cls` provides over 95% test coverage simulating both success and validation-failure execution paths.
+    F -->|DatabaseException| H[Wrap as AuraHandledException]
 
----
+    H -->|Error Response| I[Show Error Toast to User]
 
-## 3. Administration & User Guide
-
-### How to Deploy to an Org
-
-1. Authenticate your Salesforce CLI with your target org.
-
-2. Deploy metadata using:
-
-   ```bash
-
-   sf project deploy start
+    F -->|Commit| J[(Salesforce Database: Lead Object)]
 
