@@ -1,0 +1,26 @@
+<template>
+    <lightning-card title="Lead Capture" icon-name="standard:lead">
+        <div class="slds-var-m-around_medium">
+            <lightning-record-edit-form 
+                object-api-name="Lead"
+                onsuccess={handleSuccess}>
+                <lightning-messages></lightning-messages>
+                
+                <lightning-input-field field-name="FirstName"></lightning-input-field>
+                <lightning-input-field field-name="LastName" required></lightning-input-field>
+                <lightning-input-field field-name="Email" required></lightning-input-field>
+                <lightning-input-field field-name="Phone"></lightning-input-field>
+                <lightning-input-field field-name="Company" value={accountName} required></lightning-input-field>
+                <lightning-input-field field-name="LeadSource" required></lightning-input-field>
+                
+                <lightning-input-field field-name="Source_Account__c" value={recordId} class="slds-hide"></lightning-input-field>
+                
+                <lightning-input-field field-name="Capture_Notes__c"></lightning-input-field>
+                
+                <div class="slds-var-m-top_medium">
+                    <lightning-button type="submit" variant="brand" label="Create Lead"></lightning-button>
+                </div>
+            </lightning-record-edit-form>
+        </div>
+    </lightning-card>
+</template>
